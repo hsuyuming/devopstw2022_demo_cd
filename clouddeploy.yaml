@@ -1,0 +1,61 @@
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: DeliveryPipeline
+metadata:
+ name: devopstw22-clouddeploy2
+description: devopstw22 clouddeploy pipeline demo
+serialPipeline:
+ stages:
+ - targetId: devtarget
+   profiles: ["dev"]
+ - targetId: rctarget
+   profiles: ["rc"]
+ - targetId: prodtarget
+   profiles: ["prod"]
+---
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: Target
+metadata:
+ name: devtarget
+description: development cluster
+gke:
+ cluster: 
+executionConfigs:
+- privatePool:
+    workerPool: 
+    serviceAccount: shared-service-account@xxxxx.iam.gserviceaccount.com
+  usages:
+  - RENDER
+  - DEPLOY
+requireApproval: False
+---
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: Target
+metadata:
+ name: rctarget
+description: development cluster
+gke:
+ cluster: 
+executionConfigs:
+- privatePool:
+    workerPool:  
+    serviceAccount: shared-service-account@xxxxx.iam.gserviceaccount.com
+  usages:
+  - RENDER
+  - DEPLOY
+requireApproval: False
+---
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: Target
+metadata:
+ name: prodtarget
+description: development cluster
+gke:
+ cluster: 
+executionConfigs:
+- privatePool:
+    workerPool: 
+    serviceAccount: shared-service-account@xxxxx.iam.gserviceaccount.com
+  usages:
+  - RENDER
+  - DEPLOY
+requireApproval: True

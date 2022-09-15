@@ -1,0 +1,45 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+profiles:
+  - name: dev
+    deploy:
+      helm:
+        releases:
+          - name: fastapi-helm
+            artifactOverrides:
+                image: docker.io/devopstw22/fastapi_demo # no tag present!
+            createNamespace: false
+            chartPath: ./
+            valuesFiles: ["values-dev.yaml"]
+            imageStrategy:
+              helm: {}
+      statusCheck: true
+      statusCheckDeadlineSeconds: 600
+  - name: rc
+    deploy:
+      helm:
+        releases:
+          - name: fastapi-helm
+            artifactOverrides:
+                image: docker.io/devopstw22/fastapi_demo # no tag present!
+            createNamespace: false
+            chartPath: ./
+            valuesFiles: ["values-rc.yaml"]
+            imageStrategy:
+              helm: {}
+      statusCheck: true
+      statusCheckDeadlineSeconds: 600
+  - name: prod
+    deploy:
+      helm:
+        releases:
+          - name: fastapi-helm
+            artifactOverrides:
+              image: docker.io/devopstw22/fastapi_demo # no tag present!
+            createNamespace: false
+            chartPath: ./
+            valuesFiles: ["values-prod.yaml"]
+            imageStrategy:
+              helm: {}
+      statusCheck: true
+      statusCheckDeadlineSeconds: 600

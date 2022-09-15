@@ -1,0 +1,24 @@
+steps:
+  - id: 'Create Delivery Pipeline'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: /bin/bash
+    args:
+    - '-c'
+    - |
+      gcloud deploy apply --file clouddeploy.yaml --region=$LOCATION --project=$PROJECT_ID
+  
+  - id: 'Deploy release'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: /bin/bash
+    args:
+    - '-c'
+    - |
+      export random_str=`echo $$RANDOM | md5sum | head -c 10; echo;`
+      gcloud deploy releases create devopstw22-release-$$random_str-'$$DATE'-'$$TIME' \
+      --build-artifacts=./tags.json \
+      --project=$PROJECT_ID \
+      --region=$LOCATION  \
+      --delivery-pipeline=devopstw22-clouddeploy2
+
+
+serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/shared-service-account@$PROJECT_ID.iam.gserviceaccount.com'
